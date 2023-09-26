@@ -7,8 +7,7 @@ mkfile_path := $(shell pwd)/$(lastword $(MAKEFILE_LIST))
 dir=$(shell dirname $(mkfile_path))
 $(shell mkdir -p $(dir)/$(OBJ))
 
-SRCDIRS :=  project/ \
-			hardware/rpiInfo \
+SRCDIRS :=  		hardware/rpiInfo \
 			hardware/st7735  
 
 SRCS := $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
@@ -26,5 +25,12 @@ $(OBJS) : obj/%.o : %.c
 
 
 clean:
-	sudo rm -rf $(OBJ)
-	sudo rm -rf $(TATGET)
+	rm -rf $(OBJ)
+	rm -rf $(TATGET)
+
+install:
+	cp display /usr/local/sbin/display
+	cp display.service /etc/systemd/system
+	systemctl daemon-reload
+	systemctl enable display.service
+	systemctl start display.service

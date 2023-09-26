@@ -1,0 +1,22 @@
+# $Id
+# systemd service unit for oled display on uctronics enclosure
+
+[Unit]
+Description=oled display
+#Requires=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/display
+#User=root
+#Group=root
+User=games
+Group=i2c
+Restart=always
+RestartSec=5
+TimeoutStopSec=5
+
+[Install]
+WantedBy=sysinit.target
+
+
