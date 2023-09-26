@@ -17,6 +17,38 @@
 #include "st7735.h"
 #include <stdlib.h>
 
+/* vim: set ai et ts=4 sw=4: */
+#include "st7735.h"
+#include "time.h"
+#include <stdio.h>
+#include <string.h>
+#include <sys/sysinfo.h>
+#include <sys/vfs.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
+#include <linux/i2c.h>
+#include <linux/i2c-dev.h>
+#include <fcntl.h>
+#include "rpiInfo.h"
+
+extern int i2cd;
+
+/******
+Demo for ssd1306 i2c driver for  Raspberry Pi 
+******/
+#include <stdio.h>
+#include "st7735.h"
+#include "time.h"
+#include <unistd.h>
+
+
+
 /*
 * Get the IP address of wlan0 or eth0
 */
