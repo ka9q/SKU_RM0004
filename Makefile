@@ -33,4 +33,4 @@ install:
 	cp display.service /etc/systemd/system
 	systemctl daemon-reload
 	systemctl enable display.service
-	systemctl start display.service
+	systemctl restart display.service

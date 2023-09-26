@@ -2,3 +2,8 @@ build/
 obj/
 display
 .vscode/
+\#*\#
+.\#*
+*~
+*.a
+*.o
