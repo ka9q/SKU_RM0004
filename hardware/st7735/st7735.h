@@ -131,8 +131,8 @@ typedef enum FontType{
   FontType_16x26
 }FontType;
 
-extern void lcd_write_string(uint16_t x, uint16_t y,  char const *str, FontDef font,uint16_t color, uint16_t bgcolor);
-extern void lcd_write_str(uint16_t x, uint16_t y,  char const *str, FontType font,uint16_t color, uint16_t bgcolor);
+extern void lcd_write_string(uint16_t x, uint16_t y,  char const *str, FontDef const font,uint16_t color, uint16_t bgcolor);
+extern void lcd_write_str(uint16_t x, uint16_t y,  char const *str, FontType const font,uint16_t color, uint16_t bgcolor);
 extern void lcd_fill_rectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h,uint16_t color);
 extern void lcd_fill_screen(uint16_t color);
 extern void lcd_draw_image(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t const *data);
@@ -141,7 +141,7 @@ extern uint8_t lcd_begin(void);
 extern void i2c_write_data(uint8_t high, uint8_t low);
 extern void i2c_write_command(uint8_t command,uint8_t high, uint8_t low);
 extern void lcd_write_char(uint16_t x, uint16_t y, char ch, FontDef font,uint16_t color, uint16_t bgcolor);
-extern void lcd_write_ch(uint16_t x, uint16_t y, char ch, FontType font,uint16_t color, uint16_t bgcolor);
+extern void lcd_write_ch(uint16_t x, uint16_t y, char ch, FontType const font,uint16_t color, uint16_t bgcolor);
 extern void i2c_burst_transfer(uint8_t const * buff, uint32_t length);
   //extern void lcd_display(uint8_t symbol);
 extern void lcd_display_cpuLoad(void);

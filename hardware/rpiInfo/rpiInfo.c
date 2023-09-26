@@ -183,7 +183,7 @@ uint8_t get_hard_disk_memory(uint16_t *diskMemSize, uint16_t *useMemSize)
 * get temperature
 */
 
-uint8_t get_temperature(void)
+float get_temperature(void)
 {
     FILE *fd;
     unsigned int temp;
@@ -192,7 +192,7 @@ uint8_t get_temperature(void)
     fgets(buff,sizeof(buff),fd);
     sscanf(buff, "%d", &temp);
     fclose(fd);
-    return TEMPERATURE_TYPE == FAHRENHEIT ? temp/1000*1.8+32 : temp/1000;    
+    return TEMPERATURE_TYPE == FAHRENHEIT ? temp/1000*1.8+32 : temp/1000.;    
 }
 
 /*
