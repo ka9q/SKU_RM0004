@@ -29,7 +29,7 @@ clean:
 	rm -rf $(TATGET)
 
 install:
-	cp display /usr/local/sbin/display
+	cp -f display /usr/local/sbin/display
 	cp display.service /etc/systemd/system
 	systemctl daemon-reload
 	systemctl enable display.service
