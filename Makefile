@@ -21,7 +21,7 @@ VPATH := $(SRCDIRS)
 $(TATGET):$(OBJS)
 	$(CC) -o $@ $^
 $(OBJS) : obj/%.o : %.c
-	$(CC) -c $(INCLUDE) -o $@ $<
+	$(CC) -O3 -c $(INCLUDE) -o $@ $<
 
 
 clean:
