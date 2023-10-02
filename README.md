@@ -1,9 +1,15 @@
 # KA9Q hacks
-I got one of these rack units recently, and I couldn't help but hack on the code that drives the little OLED displays on the front of each unit.
-1) The hostname seems much more useful than a dynamically assigned IP address.
-2) The disk and RAM utilization readouts aren't very useful  
-3) The code for writing messages was ugly.
-4) The display is slow. It needed some speedups.
+I got one of these rack units recently, and I couldn't help but hack on the code that drives the little OLED displays on the front of each unit. I've completely rewritten it. Among other things:
+1) A hostname is much more useful than a dynamically assigned IP address.
+2) I created a systemd service file so it automatically starts.
+3) The disk and RAM utilization readouts aren't very useful  
+4) A network transmit rate is useful, especially on a system doing real-time SDR.
+5) The code and directory layout was just ugly. It needed a complete rewrite.
+6) The display is slow. It needed some speedups.
+7) I enlarged all the displays to use the full width of 15 characters, including the bar graphs at the bottom
+8) The bar graphs take a threshold parameter. When a value exeeds it, it's shown in a different color (usually red).
+9) I jettisoned the Python code. (I admit it, I just can't get into Python. The language, not the comedy troupe it's named after. I'm a diehard C programmer.)
+
 
 # SKU_RM0004
 The project supports running on RaspberryPi, Ubuntu, [HomeAssistant](https://github.com/UCTRONICS/UCTRONICS_RM0004_HA),You can also use Python to call compiled DLLs on these platforms.

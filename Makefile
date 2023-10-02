@@ -1,32 +1,10 @@
-TATGET := display
-CC     := gcc
+CFLAGS=-Wall
+SRC=rpiInfo.c st7735.c main.c
 
-OBJ := obj
-
-mkfile_path := $(shell pwd)/$(lastword $(MAKEFILE_LIST))
-dir=$(shell dirname $(mkfile_path))
-$(shell mkdir -p $(dir)/$(OBJ))
-
-SRCDIRS :=  		hardware/rpiInfo \
-			hardware/st7735  
-
-SRCS := $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
-NOT_DIR :=$(notdir $(SRCS))
-OBJS := $(patsubst %.c, $(OBJ)/%.o, $(NOT_DIR)) 
-
-INCLUDE := $(patsubst %, -I %, $(SRCDIRS))
-
-VPATH := $(SRCDIRS)
-
-$(TATGET):$(OBJS)
-	$(CC) -o $@ $^
-$(OBJS) : obj/%.o : %.c
-	$(CC) -O3 -c $(INCLUDE) -o $@ $<
-
+all: depend display
 
 clean:
-	rm -rf $(OBJ)
-	rm -rf $(TATGET)
+	rm -rf *.o display .depend
 
 install:
 	cp -f display /usr/local/sbin/display
@@ -34,3 +12,17 @@ install:
 	systemctl daemon-reload
 	systemctl enable display.service
 	systemctl restart display.service
+
+depend: .depend
+
+.depend: $(SRC)
+	rm -f .depend
+	$(CC) $(CFLAGS) -MM $^ > .depend
+
+-include .depend
+
+.PHONY:	clean all install depend
+
+display: main.o st7735.o rpiInfo.o fonts.o
+	$(CC) $(LDOPTS) -o $@ $^
+
