@@ -28,5 +28,6 @@ void get_cpu_memory(float *Totalram, float *freeram);
 float get_temperature(void);
 uint8_t get_cpu_message(void);
 uint8_t get_hard_disk_memory(uint16_t *diskMemSize, uint16_t *useMemSize);
+int get_tx_rate(void); // Added by KA9Q
 
 #endif /*__RPIINFO_H*/

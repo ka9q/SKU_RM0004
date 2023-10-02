@@ -65,6 +65,9 @@ int main(void)
 	  lcd_display_temp();
 	  sleep(2);
 
+	  lcd_display_net();
+	  sleep(2);
+
 #if 0	  // ram & disk aren't very useful
 	  lcd_display_ram();
 	  sleep(2);
@@ -320,6 +323,13 @@ void lcd_display_temp(void)
     }
     lcd_display_percentage((uint16_t)temp, ST7735_RED);
 }
+
+void lcd_display_net(void){
+  int tx_rate = get_tx_rate();
+  
+    printo(0, 35, Font_11x18, ST7735_WHITE, ST7735_BLACK,"Net: %3d Mb/s",tx_rate/1000000);
+}
+
 
 void lcd_display_disk(void)
 {

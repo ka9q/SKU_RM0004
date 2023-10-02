@@ -218,3 +218,77 @@ uint8_t get_cpu_message(void)
     return usCpu+syCpu;
   
 }
+
+#include <regex.h>
+#include <sys/time.h>
+
+char const *interface = "eth0";
+char const *info = "/proc/net/dev";
+
+struct counts {
+  unsigned long long rxbytes,rxpkts,txbytes,txpkts;
+  struct timeval t;
+};  
+
+static struct counts prev;
+
+// Get transmit bit rate; borrowed from ka9q's linkspeed.c
+int get_tx_rate(void){
+  int c;
+  regex_t preg;
+  if(0 != (c = regcomp(&preg,interface,REG_ICASE|REG_NOSUB))){
+    char errbuf[1024];
+    regerror(c,&preg,errbuf,sizeof(errbuf));
+    return 0;
+  }
+
+  struct counts curr;
+  memset(&curr,0,sizeof(curr));
+  
+  double rxbitrate = 0,rxpktrate = 0,txbitrate = 0,txpktrate = 0;
+
+  bool rdflag = false;
+  gettimeofday(&curr.t,NULL);
+  FILE *st = fopen(info,"r");
+  if(st == NULL){
+    return 0;
+  }
+  char buffer[1024];
+  while(fgets(buffer,sizeof(buffer),st) != NULL){
+    if(regexec(&preg,buffer,0,NULL,0) == 0){
+      char const *cp = strchr(buffer,':');
+      if(cp == NULL){
+	return 0;
+      }
+      sscanf(cp,": %llu %llu %*u %*u %*u %*u %*u %*u %llu %llu %*u %*u %*u %*u %*u %*u",
+	     &curr.rxbytes,&curr.rxpkts,&curr.txbytes,&curr.txpkts);
+      rdflag = true; // Successful read
+      break;
+    }
+  }
+  fclose(st);
+  st = NULL;
+  if(!rdflag){
+    regfree(&preg);
+    return 0;
+  }
+#if 0
+  printf("rxbytes %lu rxpkts %lu txbytes %lu txpkts %lu\n",curr.rxbytes,curr.rxpkts,curr.txbytes,curr.txpkts);
+#endif
+
+  if(prev.t.tv_sec != 0){
+    // First will establish history
+    long long interval = (curr.t.tv_sec - prev.t.tv_sec) * 1000000 + (curr.t.tv_usec - prev.t.tv_usec);
+    
+    // First one will establish history
+    rxbitrate = (curr.rxbytes - prev.rxbytes) / interval;
+    txbitrate = (curr.txbytes - prev.txbytes) / interval;
+    
+    rxpktrate = (curr.rxpkts - prev.rxpkts) / interval;
+    txpktrate = (curr.txpkts - prev.txpkts) / interval;
+    
+    prev = curr;
+    regfree(&preg);
+  }
+  return txbitrate;
+}
