@@ -95,14 +95,14 @@ int get_hard_disk_memory(int *diskMemSize, int *useMemSize){
 
   char diskMembuff[10];
   fgets(diskMembuff,sizeof(diskMembuff),fd);
-  fclose(fd);
+  pclose(fd);
 
   fd = popen("df -l | grep /dev/sda | awk '{printf \"%s\", $(3)}'","r"); 
   if(fd == NULL)
     return -1;
   char useMembuff[10];
   fgets(useMembuff,sizeof(useMembuff),fd);
-  fclose(fd);
+  pclose(fd);
 
   *diskMemSize = atoi(diskMembuff)/1024/1024;
   *useMemSize  = atoi(useMembuff)/1024/1024;
