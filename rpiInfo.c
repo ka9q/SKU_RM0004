@@ -188,9 +188,9 @@ float get_tx_rate(char const *interface){
     float interval = (curr.t.tv_sec - prev.t.tv_sec) +  (curr.t.tv_usec - prev.t.tv_usec) * 1e-6;
     
     // First one will establish history
-    float txbitrate = (curr.txbytes - prev.txbytes) / interval;
+    float txbitrate = 8 * (curr.txbytes - prev.txbytes) / interval;
 #if 0 // In case they're ever needed
-    float rxbitrate = (curr.rxbytes - prev.rxbytes) / interval;
+    float rxbitrate = 8 * (curr.rxbytes - prev.rxbytes) / interval;
     float rxpktrate = (curr.rxpkts - prev.rxpkts) / interval;
     float txpktrate = (curr.txpkts - prev.txpkts) / interval;
 #endif
