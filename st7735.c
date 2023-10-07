@@ -130,12 +130,13 @@ int lcd_begin(const char *dev){
   // I2C Init
   I2cd = open(dev, O_RDWR); // usually "/dev/i2c-1"
   if (I2cd < 0){
-    fprintf(stderr, "Device %s failed to initialize\n",dev);
+    fprintf(stderr, "Can't open I2C device %s\n",dev);
     return 1;
   }
-  if (ioctl(I2cd, I2C_SLAVE_FORCE, I2C_ADDRESS) < 0)
+  if (ioctl(I2cd, I2C_SLAVE_FORCE, I2C_ADDRESS) < 0){
+    perror("ioctl on I2C device");
     return 1;
-
+  }
   return 0;
 }
 
